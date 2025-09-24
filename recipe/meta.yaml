@@ -29,6 +29,8 @@ requirements:
 # Assert fails
 # assert 946684800.123 == IsDatetime(approx=datetime.datetime(2000, 1, 1, 0, 0), unix_number=True)
 {% set tests_to_deselect = " --deselect=tests/test_datetime.py::test_is_datetime" %}
+# AssertionError: assert <tests.test_inspection.Foo object at 0x00000166005F7F10> == HasRepr(IsStr(regex='<tests.test_inspection.Foo object at 0x[0-9a-f]{6,20}>'))
+{% set tests_to_deselect = " --deselect=tests/test_inspection.py::test_has_repr" %}
 
 test:
   source_files:
