@@ -44,7 +44,7 @@ test:
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
-    - pytest -v tests {{ ignore_tests }} {{ tests_to_deselect }}
+    - pytest -v tests {{ ignore_tests }} {{ tests_to_deselect }}  # [not py==314]
 
 about:
   home: https://dirty-equals.helpmanual.io
