@@ -11,7 +11,7 @@ source:
 
 build:
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
-  number: 0
+  number: 1
   skip: true  # [py<39]
 
 requirements:
@@ -40,11 +40,11 @@ test:
   requires:
     - pip
     - pytest
-    - pydantic >=2.4.2
+    - pydantic >=2.4.2  # [not py==314]
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
-    - pytest -v tests {{ ignore_tests }} {{ tests_to_deselect }}
+    - pytest -v tests {{ ignore_tests }} {{ tests_to_deselect }}  # [not py==314]
 
 about:
   home: https://dirty-equals.helpmanual.io
