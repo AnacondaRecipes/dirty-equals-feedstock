@@ -1,17 +1,24 @@
 {% set name = "dirty-equals" %}
-{% set version = "0.10.0" %}
+{% set version = "0.11" %}
+{% set ignore_tests = " --ignore=tests/test_docs.py" %}
+{% set tests_to_deselect = " --deselect=tests/test_datetime.py::test_is_datetime" %}
+{% set tests_to_deselect = " --deselect=tests/test_inspection.py::test_has_repr" %}
 
+# E   ModuleNotFoundError: No module named 'pytest_examples'
+# Assert fails
+# assert 946684800.123 == IsDatetime(approx=datetime.datetime(2000, 1, 1, 0, 0), unix_number=True)
+# AssertionError: assert <tests.test_inspection.Foo object at 0x00000166005F7F10> == HasRepr(IsStr(regex='<tests.test_inspection.Foo object at 0x[0-9a-f]{6,20}>'))
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_') }}-{{ version }}.tar.gz
-  sha256: 623d7a07c5ba437f1a834c6246d1e3eb97238ca70331c61a499d9aabd757b899
+  sha256: f4ac74ee88f2d11e2fa0f65eb30ee4f07105c5f86f4dc92b09eb1138775027c3
 
 build:
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
-  number: 2
+  number: 0
   skip: true  # [py<39]
 
 requirements:
@@ -23,14 +30,6 @@ requirements:
     - python
   run_constrained:
     - pydantic >=2.4.2
-
-# E   ModuleNotFoundError: No module named 'pytest_examples'
-{% set ignore_tests = " --ignore=tests/test_docs.py" %}
-# Assert fails
-# assert 946684800.123 == IsDatetime(approx=datetime.datetime(2000, 1, 1, 0, 0), unix_number=True)
-{% set tests_to_deselect = " --deselect=tests/test_datetime.py::test_is_datetime" %}
-# AssertionError: assert <tests.test_inspection.Foo object at 0x00000166005F7F10> == HasRepr(IsStr(regex='<tests.test_inspection.Foo object at 0x[0-9a-f]{6,20}>'))
-{% set tests_to_deselect = " --deselect=tests/test_inspection.py::test_has_repr" %}
 
 test:
   source_files:
@@ -49,7 +48,7 @@ test:
 about:
   home: https://dirty-equals.helpmanual.io
   summary: Doing dirty (but extremely useful) things with equals.
-  description: dirty-equals is a python library that (mis)uses the __eq__ method to 
+  description: dirty-equals is a python library that (mis)uses the __eq__ method to
     make python code (generally unit tests) more declarative and therefore easier to read and write.
   license: MIT
   license_family: MIT
