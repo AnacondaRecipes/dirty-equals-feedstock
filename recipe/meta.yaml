@@ -1,13 +1,6 @@
 {% set name = "dirty-equals" %}
 {% set version = "0.11" %}
-{% set ignore_tests = " --ignore=tests/test_docs.py" %}
-{% set tests_to_deselect = " --deselect=tests/test_datetime.py::test_is_datetime" %}
-{% set tests_to_deselect = " --deselect=tests/test_inspection.py::test_has_repr" %}
 
-# E   ModuleNotFoundError: No module named 'pytest_examples'
-# Assert fails
-# assert 946684800.123 == IsDatetime(approx=datetime.datetime(2000, 1, 1, 0, 0), unix_number=True)
-# AssertionError: assert <tests.test_inspection.Foo object at 0x00000166005F7F10> == HasRepr(IsStr(regex='<tests.test_inspection.Foo object at 0x[0-9a-f]{6,20}>'))
 package:
   name: {{ name|lower }}
   version: {{ version }}
@@ -31,6 +24,14 @@ requirements:
   run_constrained:
     - pydantic >=2.4.2
 
+# E   ModuleNotFoundError: No module named 'pytest_examples'
+# Assert fails
+# assert 946684800.123 == IsDatetime(approx=datetime.datetime(2000, 1, 1, 0, 0), unix_number=True)
+# AssertionError: assert <tests.test_inspection.Foo object at 0x00000166005F7F10> == HasRepr(IsStr(regex='<tests.test_inspection.Foo object at 0x[0-9a-f]{6,20}>'))
+{% set tests_to_deselect = " --ignore=tests/test_docs.py" %}
+{% set tests_to_deselect = tests_to_deselect + " --deselect=tests/test_datetime.py::test_is_datetime" %}
+{% set tests_to_deselect = tests_to_deselect + " --deselect=tests/test_inspection.py::test_has_repr" %}
+
 test:
   source_files:
     - tests
@@ -39,11 +40,11 @@ test:
   requires:
     - pip
     - pytest
-    - pydantic >=2.4.2  # [not py==314]
+    - pydantic >=2.4.2
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
-    - pytest -v tests {{ ignore_tests }} {{ tests_to_deselect }}  # [not py==314]
+    - pytest -v tests {{ tests_to_deselect }}
 
 about:
   home: https://dirty-equals.helpmanual.io
